@@ -34,7 +34,7 @@ app.listen(PORT,
 )
 
 //Parse the youtube link
-app.get('/query', (req, res) => {
+app.post('/query', (req, res) => {
     //Get link
     const { search } = req.body;
     //If no search query is sent then error
@@ -43,7 +43,7 @@ app.get('/query', (req, res) => {
 });
 
 //Parse the youtube link with search limit
-app.get('/query/:searchLimit', (req, res) => {
+app.post('/query/:searchLimit', (req, res) => {
     //Get search limit and link
     const { searchLimit } = req.params;
     const { search } = req.body;
