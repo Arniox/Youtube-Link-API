@@ -1,0 +1,22 @@
+{
+  "name": "@youtube-link-parser/restful-api",
+  "version": "1.0.0",
+  "description": "Parses a Youtube video/playlist link to get details. Or queries a string for a Youtube video Link",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Nikkolas Diehl",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "dotenv": "^9.0.1",
+    "express": "^4.17.1",
+    "helmet": "^4.6.0",
+    "morgan": "^1.10.0",
+    "ytdl-core": "^4.7.0",
+    "ytpl": "^2.2.1",
+    "ytsr": "^3.5.0"
+  }
+}
