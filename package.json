@@ -4,7 +4,7 @@
   "description": "Parses a Youtube video/playlist link to get details. Or queries a string for a Youtube video Link",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "Nikkolas Diehl",
