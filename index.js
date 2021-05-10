@@ -98,6 +98,7 @@ playListPromise = (search) => {
 //Function to process playlist array
 processPromise = (promise, searchLimit) => {
     var songMap = new Array();
+    var type = '';
 
     //Return new promise
     return new Promise((resolve, reject) => {
@@ -116,10 +117,12 @@ processPromise = (promise, searchLimit) => {
                         url: (songInfo.videoDetails.video_url || songInfo.videoDetails.videoId),
                         duration_ms: parseInt(songInfo.videoDetails.lengthSeconds) * 1000
                     };
+                    type = 'song';
                     //Add to songMap
                     songMap.push(song);
                 } else {
                     //Playlist data already contains basic info
+                    type = 'playlist';
                     //Add to songMap
                     songMap.push(playList);
                 }
@@ -137,10 +140,11 @@ processPromise = (promise, searchLimit) => {
                     })).slice(0, searchLimit);
 
                 //Add array to songMap
+                type = 'search';
                 songMap = songMap.concat(songArray);
             }
             //Return the songMap
-            resolve(songMap);
+            resolve({ Message: type, Array: songMap });
         }).catch((error) => {
             console.error(error);
             reject(error);
