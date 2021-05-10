@@ -1,9 +1,9 @@
 //Express
 const express = require('express');
-const helmet = require('helmet');
-const morgan = require('morgan');
 const app = express();
 //Imports
+const helmet = require('helmet');
+const morgan = require('morgan');
 const ytdl = require('ytdl-core');
 const ytpl = require('ytpl');
 const ytsr = require('ytsr');
@@ -16,6 +16,14 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV !== 'production') require('dot
 app.use(express.json());
 app.use(helmet());
 app.use(morgan('combined'));
+//Timeout catch
+app.use((req, res, next) => {
+    req.setTimeout(30000, function () {
+        //Send error
+        res.status(504).send({ error: 'Request Timed Out' });
+    });
+    next();
+});
 
 //Load app
 app.listen(PORT,
@@ -66,9 +74,15 @@ playListPromise = (search) => {
     if (ytpl.validateID(search)) {
         //Return a promise for the playlist
         return new Promise((resolve, reject) => {
-            ytpl(search, { limit: 100 }).then((playList) => {
+            ytpl(search, { limit: Infinity }).then((playList) => {
                 //Resolve the playlist maped with links to an array
-                resolve(playList.items.map(v => v.shortUrl));
+                resolve(playList.items
+                    .filter(vid => !vid.isLive)
+                    .map(v => ({
+                        title: v.title,
+                        url: v.shortUrl || v.url,
+                        duration_ms: v.durationSec ? v.durationSec * 1000 : convertTimeStamp(v.duration)
+                    })));
             }).catch((error) => {
                 reject(error);
             });
@@ -90,9 +104,9 @@ processPromise = (promise, searchLimit) => {
         //After promise
         promise.then(async (playList) => {
             //Check if playList contains links
-            if (/(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*(?:watch|embed)?(?:.*v=|v\/|\/)([\w\-_]+)\&?/g.test(playList[0])) {
-                //For each item in the array
-                for (const link of playList) {
+            if (playList.length > 1 || /(?:https?:\/\/)?(?:www\.)?youtu\.?be(?:\.com)?\/?.*(?:watch|embed)?(?:.*v=|v\/|\/)([\w\-_]+)\&?/g.test(playList[0])) {
+                //Check if it's a single link or array
+                if (playList.length == 1) {
                     //For each item in the array
                     var songInfo = await ytdl.getBasicInfo(link);
 
@@ -104,6 +118,10 @@ processPromise = (promise, searchLimit) => {
                     };
                     //Add to songMap
                     songMap.push(song);
+                } else {
+                    //Playlist data already contains basic info
+                    //Add to songMap
+                    songMap.push(playList);
                 }
             } else {
                 //Use search query for youtube link
