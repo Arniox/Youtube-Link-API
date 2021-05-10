@@ -109,7 +109,7 @@ processPromise = (promise, searchLimit) => {
                 //Check if it's a single link or array
                 if (playList.length == 1) {
                     //For each item in the array
-                    var songInfo = await ytdl.getBasicInfo(link);
+                    var songInfo = await ytdl.getBasicInfo(playList[0]);
 
                     //Get song
                     var song = {
