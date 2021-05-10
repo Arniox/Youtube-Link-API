@@ -157,8 +157,8 @@ convertTimeStamp = (timeStamp) => {
     var timeParts = timeStamp.split(':').reverse();
     var totalTimeMilli = 0;
     //For each part
-    if (timeParts.length == 1) totalTimeMilli += timeParts[0] * 1000;
-    if (timeParts.length == 2) totalTimeMilli += timeParts[1] * (60 * 1000);
-    if (timeParts.length == 3) totalTimeMilli += timeParts[2] * (60 * 60 * 1000);
+    if (timeParts.length >= 1) totalTimeMilli += timeParts[0] * 1000;
+    if (timeParts.length >= 2) totalTimeMilli += timeParts[1] * (60 * 1000);
+    if (timeParts.length >= 3) totalTimeMilli += timeParts[2] * (60 * 60 * 1000);
     return totalTimeMilli;
 }
