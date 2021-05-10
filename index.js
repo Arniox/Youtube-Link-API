@@ -124,7 +124,7 @@ processPromise = (promise, searchLimit) => {
                     //Playlist data already contains basic info
                     type = 'playlist';
                     //Add to songMap
-                    songMap.push(playList);
+                    songMap = songMap.concat(playList);
                 }
             } else {
                 //Use search query for youtube link
