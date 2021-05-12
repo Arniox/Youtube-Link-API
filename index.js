@@ -128,7 +128,7 @@ processPromise = (promise, searchLimit) => {
                 }
             } else {
                 //Use search query for youtube link
-                var searchResults = await ytsr(playList[0], { hl: 'en', pages: 1, requestOptions: { type: 'Video' } });
+                var searchResults = await ytsr(playList[0], { hl: 'en', pages: 1 });
 
                 //Filter for songs
                 var songArray = searchResults.items
