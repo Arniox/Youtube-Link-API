@@ -79,7 +79,7 @@ playListPromise = (search) => {
                 resolve(playList.items
                     .filter(vid => !vid.isLive)
                     .map(v => ({
-                        title: v.title.replace(/(\*|_|`|~|\\|\[|])/g, ''),
+                        title: v.title,
                         url: v.shortUrl || v.url,
                         duration_ms: v.durationSec ? v.durationSec * 1000 : v.duration ? convertTimeStamp(v.duration) : 0
                     })));
@@ -113,7 +113,7 @@ processPromise = (promise, searchLimit) => {
 
                     //Get song
                     var song = {
-                        title: songInfo.videoDetails.title.replace(/(\*|_|`|~|\\|\[|])/g, ''),
+                        title: songInfo.videoDetails.title,
                         url: (songInfo.videoDetails.video_url || songInfo.videoDetails.videoId),
                         duration_ms: songInfo.videoDetails.lengthSeconds ? parseInt(songInfo.videoDetails.lengthSeconds) * 1000 : 0
                     };
@@ -134,7 +134,7 @@ processPromise = (promise, searchLimit) => {
                 var songArray = searchResults.items
                     .filter(vid => vid.type.toLowerCase() == 'video' && !vid.isLive)
                     .map(v => ({
-                        title: v.title.replace(/(\*|_|`|~|\\|\[|])/g, ''),
+                        title: v.title,
                         url: v.url,
                         duration_ms: v.duration ? convertTimeStamp(v.duration) : 0
                     })).slice(0, searchLimit);
