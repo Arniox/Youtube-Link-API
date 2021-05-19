@@ -30,15 +30,15 @@ app.listen(PORT,
     () => {
         var { name, version } = require('./package.json');
         console.log(`${name}:${version} is alive on port: ${PORT}`);
+    
+        //Ping server constantly to avoid idle
+        const minutes = 30, interval = minutes * 60 * 1000;
+        //Ping bot
+        setInterval(function () {
+            console.log('I am currently alive.');
+        }, interval);
     }
 )
-
-//Ping server constantly to avoid idle
-const minutes = 30, interval = minutes * 60 * 1000;
-//Ping bot
-setInterval(function () {
-    console.log('I am currently alive.');
-}, interval);
 
 //Parse the youtube link
 app.post('/query', (req, res) => {
