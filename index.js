@@ -32,7 +32,7 @@ app.listen(PORT,
         console.log(`${name}:${version} is alive on port: ${PORT}`);
 
         //Ping server constantly to avoid idle
-        const minutes = 10, interval = minutes * 60 * 1000;
+        const minutes = 1, interval = minutes * 60 * 1000;
         //Ping bot
         setInterval(function () {
             console.log('I am currently alive.');
