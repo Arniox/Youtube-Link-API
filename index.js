@@ -82,6 +82,8 @@ playListPromise = (search) => {
         //Return a promise for the playlist
         return new Promise((resolve, reject) => {
             ytpl(search, { limit: /*Infinity*/500 }).then((playList) => {
+                console.log(playList.items[0]);
+
                 //Resolve the playlist maped with links to an array
                 resolve(playList.items
                     .filter(vid => !vid.isLive)
@@ -89,7 +91,7 @@ playListPromise = (search) => {
                         title: v.title,
                         url: v.shortUrl || v.url,
                         duration_ms: v.durationSec ? v.durationSec * 1000 : v.duration ? convertTimeStamp(v.duration) : 0,
-                        thumbnail: (songInfo.videoDetails.thumbnails.slice(-1)[0] ? songInfo.videoDetails.thumbnails.slice(-1)[0].url : null)
+                        thumbnail: (v.thumbnails.slice(-1)[0] ? v.thumbnails.slice(-1)[0].url : null)
                     })));
             }).catch((error) => {
                 reject(error);
@@ -139,6 +141,8 @@ processPromise = (promise, searchLimit) => {
                 //Use search query for youtube link
                 var searchResults = await ytsr(playList[0], { hl: 'en', pages: 1 });
 
+                console.log(searchResults.items[0]);
+
                 //Filter for songs
                 var songArray = searchResults.items
                     .filter(vid => vid.type.toLowerCase() == 'video' && !vid.isLive)
@@ -146,7 +150,7 @@ processPromise = (promise, searchLimit) => {
                         title: v.title,
                         url: v.url,
                         duration_ms: v.duration ? convertTimeStamp(v.duration) : 0,
-                        thumbnail: (songInfo.videoDetails.thumbnails.slice(-1)[0] ? songInfo.videoDetails.thumbnails.slice(-1)[0].url : null)
+                        thumbnail: (v.thumbnails.slice(-1)[0] ? v.thumbnails.slice(-1)[0].url : null)
                     })).slice(0, searchLimit);
 
                 //Add array to songMap
