@@ -184,8 +184,10 @@ convertTimeStamp = (timeStamp) => {
 
 //Biggest thumbnail
 bestThumbnail = (array) => {
-    if (array.length > 0) {
-        return array.sort(function (a, b) {
+    var copy = array.slice(0);
+
+    if (copy.length > 0) {
+        return copy.sort(function (a, b) {
             if (a['width'] == b['width']) return 0
             else if (parseInt(a['width'] < parseInt(b['width']))) return 1;
             else return -1;
