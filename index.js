@@ -82,9 +82,6 @@ playListPromise = (search) => {
         //Return a promise for the playlist
         return new Promise((resolve, reject) => {
             ytpl(search, { limit: /*Infinity*/500 }).then((playList) => {
-                console.log(playList.items[0].thumbnails);
-                console.log(bestThumbnail(playList.items[0].thumbnails));
-
                 //Resolve the playlist maped with links to an array
                 resolve(playList.items
                     .filter(vid => !vid.isLive)
@@ -122,9 +119,6 @@ processPromise = (promise, searchLimit) => {
                     //For each item in the array
                     var songInfo = await ytdl.getBasicInfo(playList[0]);
 
-                    console.log(songInfo.videoDetails.thumbnails);
-                    console.log(bestThumbnail(songInfo.videoDetails.thumbnails));
-
                     //Get song
                     var song = {
                         title: songInfo.videoDetails.title,
@@ -132,9 +126,6 @@ processPromise = (promise, searchLimit) => {
                         duration_ms: songInfo.videoDetails.lengthSeconds ? parseInt(songInfo.videoDetails.lengthSeconds) * 1000 : 0,
                         thumbnail: bestThumbnail(songInfo.videoDetails.thumbnails)
                     };
-
-                    console.log(song);
-
                     type = 'song';
                     //Add to songMap
                     songMap.push(song);
