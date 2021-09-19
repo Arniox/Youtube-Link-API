@@ -120,6 +120,7 @@ processPromise = (promise, searchLimit) => {
                     var songInfo = await ytdl.getBasicInfo(playList[0]);
 
                     console.log(songInfo.videoDetails.thumbnails);
+                    console.log(bestThumbnail(songInfo.videoDetails.thumbnails);
 
                     //Get song
                     var song = {
@@ -180,7 +181,7 @@ bestThumbnail = (array) => {
     if (array.length > 0) {
         return array.sort(
             function (a, b) {
-                return parseInt(b['width']) - parseFloat(a['width']);
+                return (parseInt(b['width']) < parseFloat(a['width']) ? 1 : 0);
             }
         )[0].url;
     } else
