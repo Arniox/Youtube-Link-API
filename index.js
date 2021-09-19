@@ -181,7 +181,7 @@ bestThumbnail = (array) => {
     if (array.length > 0) {
         return array.sort(
             function (a, b) {
-                return (parseInt(a['width']) < parseFloat(b['width']) ? 1 : 0);
+                return (parseInt(b['width']) > parseFloat(a['width']) ? 1 : 0);
             }
         )[0].url;
     } else
