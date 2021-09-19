@@ -81,7 +81,7 @@ playListPromise = (search) => {
     if (ytpl.validateID(search)) {
         //Return a promise for the playlist
         return new Promise((resolve, reject) => {
-            ytpl(search, { limit: Infinity }).then((playList) => {
+            ytpl(search, { limit: /*Infinity*/500 }).then((playList) => {
                 //Resolve the playlist maped with links to an array
                 resolve(playList.items
                     .filter(vid => !vid.isLive)
