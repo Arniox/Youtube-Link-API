@@ -88,7 +88,8 @@ playListPromise = (search) => {
                     .map(v => ({
                         title: v.title,
                         url: v.shortUrl || v.url,
-                        duration_ms: v.durationSec ? v.durationSec * 1000 : v.duration ? convertTimeStamp(v.duration) : 0
+                        duration_ms: v.durationSec ? v.durationSec * 1000 : v.duration ? convertTimeStamp(v.duration) : 0,
+                        thumbnail: (songInfo.videoDetails.thumbnails.slice(-1)[0] ? songInfo.videoDetails.thumbnails.slice(-1)[0].url : null)
                     })));
             }).catch((error) => {
                 reject(error);
@@ -118,13 +119,12 @@ processPromise = (promise, searchLimit) => {
                     //For each item in the array
                     var songInfo = await ytdl.getBasicInfo(playList[0]);
 
-                    console.log(songInfo.videoDetails.thumbnails);
-
                     //Get song
                     var song = {
                         title: songInfo.videoDetails.title,
                         url: (songInfo.videoDetails.video_url || songInfo.videoDetails.videoId),
-                        duration_ms: songInfo.videoDetails.lengthSeconds ? parseInt(songInfo.videoDetails.lengthSeconds) * 1000 : 0
+                        duration_ms: songInfo.videoDetails.lengthSeconds ? parseInt(songInfo.videoDetails.lengthSeconds) * 1000 : 0,
+                        thumbnail: (songInfo.videoDetails.thumbnails.slice(-1)[0] ? songInfo.videoDetails.thumbnails.slice(-1)[0].url : null)
                     };
                     type = 'song';
                     //Add to songMap
@@ -145,7 +145,8 @@ processPromise = (promise, searchLimit) => {
                     .map(v => ({
                         title: v.title,
                         url: v.url,
-                        duration_ms: v.duration ? convertTimeStamp(v.duration) : 0
+                        duration_ms: v.duration ? convertTimeStamp(v.duration) : 0,
+                        thumbnail: (songInfo.videoDetails.thumbnails.slice(-1)[0] ? songInfo.videoDetails.thumbnails.slice(-1)[0].url : null)
                     })).slice(0, searchLimit);
 
                 //Add array to songMap
