@@ -82,6 +82,9 @@ playListPromise = (search) => {
         //Return a promise for the playlist
         return new Promise((resolve, reject) => {
             ytpl(search, { limit: /*Infinity*/500 }).then((playList) => {
+                console.log(playList.items[0].thumbnails);
+                console.log(bestThumbnail(playList.items[0].thumbnails));
+
                 //Resolve the playlist maped with links to an array
                 resolve(playList.items
                     .filter(vid => !vid.isLive)
