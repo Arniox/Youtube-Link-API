@@ -118,6 +118,8 @@ processPromise = (promise, searchLimit) => {
                     //For each item in the array
                     var songInfo = await ytdl.getBasicInfo(playList[0]);
 
+                    console.log(songInfo);
+
                     //Get song
                     var song = {
                         title: songInfo.videoDetails.title,
