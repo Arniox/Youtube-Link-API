@@ -132,6 +132,9 @@ processPromise = (promise, searchLimit) => {
                         duration_ms: songInfo.videoDetails.lengthSeconds ? parseInt(songInfo.videoDetails.lengthSeconds) * 1000 : 0,
                         thumbnail: bestThumbnail(songInfo.videoDetails.thumbnails)
                     };
+
+                    console.log(song);
+
                     type = 'song';
                     //Add to songMap
                     songMap.push(song);
