@@ -82,8 +82,6 @@ playListPromise = (search) => {
         //Return a promise for the playlist
         return new Promise((resolve, reject) => {
             ytpl(search, { limit: /*Infinity*/500 }).then((playList) => {
-                console.log(playList.items[0]);
-
                 //Resolve the playlist maped with links to an array
                 resolve(playList.items
                     .filter(vid => !vid.isLive)
@@ -91,7 +89,7 @@ playListPromise = (search) => {
                         title: v.title,
                         url: v.shortUrl || v.url,
                         duration_ms: v.durationSec ? v.durationSec * 1000 : v.duration ? convertTimeStamp(v.duration) : 0,
-                        thumbnail: (v.thumbnails.slice(-1)[0] ? v.thumbnails.slice(-1)[0].url : null)
+                        thumbnail: bestThumbnail(v.thumbnails)
                     })));
             }).catch((error) => {
                 reject(error);
@@ -126,7 +124,7 @@ processPromise = (promise, searchLimit) => {
                         title: songInfo.videoDetails.title,
                         url: (songInfo.videoDetails.video_url || songInfo.videoDetails.videoId),
                         duration_ms: songInfo.videoDetails.lengthSeconds ? parseInt(songInfo.videoDetails.lengthSeconds) * 1000 : 0,
-                        thumbnail: (songInfo.videoDetails.thumbnails.slice(-1)[0] ? songInfo.videoDetails.thumbnails.slice(-1)[0].url : null)
+                        thumbnail: bestThumbnail(songInfo.videoDetails.thumbnails)
                     };
                     type = 'song';
                     //Add to songMap
@@ -141,8 +139,6 @@ processPromise = (promise, searchLimit) => {
                 //Use search query for youtube link
                 var searchResults = await ytsr(playList[0], { hl: 'en', pages: 1 });
 
-                console.log(searchResults.items[0]);
-
                 //Filter for songs
                 var songArray = searchResults.items
                     .filter(vid => vid.type.toLowerCase() == 'video' && !vid.isLive)
@@ -150,7 +146,7 @@ processPromise = (promise, searchLimit) => {
                         title: v.title,
                         url: v.url,
                         duration_ms: v.duration ? convertTimeStamp(v.duration) : 0,
-                        thumbnail: (v.thumbnails.slice(-1)[0] ? v.thumbnails.slice(-1)[0].url : null)
+                        thumbnail: bestThumbnail(v.thumbnails)
                     })).slice(0, searchLimit);
 
                 //Add array to songMap
@@ -175,4 +171,16 @@ convertTimeStamp = (timeStamp) => {
     if (timeParts.length >= 2) totalTimeMilli += timeParts[1] * (60 * 1000);
     if (timeParts.length >= 3) totalTimeMilli += timeParts[2] * (60 * 60 * 1000);
     return totalTimeMilli;
+}
+
+//Biggest thumbnail
+bestThumbnail = (array) => {
+    if (array.length > 0) {
+        return array.sort(
+            function (a, b) {
+                return parseInt(b['width']) - parseFloat(a['width']);
+            }
+        )[0].url;
+    } else
+        return null;
 }
